@@ -1,18 +1,29 @@
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.firefox.firefox_binary import FirefoxBinary
+from selenium.webdriver.firefox.options import Options
+import time
 
-binary = FirefoxBinary('/usr/bin/firefox')
+print("Working very well")
 
-options = webdriver.ChromeOptions() 
-options.add_argument("start-maximized")
-options.add_experimental_option("excludeSwitches", ["enable-automation"])
-options.add_experimental_option('useAutomationExtension', False)
-driver = webdriver.Firefox(executable_path='/root/discord/geckodriver')
-baseurl = "http://youtube.com"
-keyword = input()
-driver.get(f'{baseurl}/search?q={keyword}')
-print([my_elem.text for my_elem in WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located((By.XPATH, "//yt-formatted-string[@class='style-scope ytd-video-renderer' and @aria-label]")))])
-driver.quit()
+while True:
+	time.sleep(5)
+	options = Options()
+	options.headless = True
+	browser = webdriver.Firefox(options=options, executable_path='/root/discord/geckodriver')
+	url = "https://www.youtube.com/c/AboFlah/videos"
+
+	browser.get(url)
+	video = browser.find_element_by_xpath('//*[@id="video-title"]')
+	video_title = str(video.text)
+	f = open('titles.txt', 'r')
+	past_title = f.readline()
+
+	if past_title == video_title:
+		pass
+	else:
+		video_url = str(browser.current_url)
+		id = video_url.split("=", 1)[0]
+		print("New")
+		f = open('titles.txt', 'w')
+		f.write(video_title)
+
+browser.quit()
