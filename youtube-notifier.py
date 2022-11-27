@@ -3,18 +3,21 @@ try:
 	from selenium.webdriver.firefox.options import Options
 	import time
 except Exception:
-	print('Package Error: The packages that the program using is not exist, Try "pip3 install selenium"')
+	print('Error: Selenium is not found/installed, try "pip3 install selenium"')
+	
+url = "https://www.youtube.com/c/AboFlah/videos"
 
 def main():
 	print("Applcation starts...")
 	options = Options()
 	options.headless = True
-	browser = webdriver.Firefox(options=options, executable_path='/root/discord/geckodriver')
-	url = "https://www.youtube.com/c/AboFlah/videos"
+	# Using geckodriver since I was using linux at the time
+	browser = webdriver.Firefox(options=options, executable_path='/path/to/geckodriver')
 	while True:
 		try:
 			time.sleep(1800)
 			browser.get(url)
+			# idk if this will always work but if id didn't just change the xpath
 			video = browser.find_element_by_xpath('//*[@id="video-title"]')
 			video_title = str(video.text)
 			f = open('titles.txt', 'r')
@@ -33,7 +36,7 @@ def main():
 			print("Closing...")
 			break
 		except Exception as ex:
-			print("Error: error has been ocurred, send the log to the developers it you sure this is an error from the app")
+			print('Error occured!\nAn "Error.log" has been generated\ncreate an issue at "https://github.com/OmarHosam/youtube-new-video-notifier/issues"')
 			e = open('Error.log', 'w')
 			e.write(ex)
 			break
